@@ -42,7 +42,7 @@ Melon의 OAuth2 access token을 발급받는 과정은 크게 *4단계*로 나�
 
 **Step 1: Authorization Endpoint을 이용한 authorization_code 발급 요청**  
 첫번째로, 파트너앱에서 웹뷰를 로드하여 authorization HTTP request를 요청합니다.  
-request에는 파트너앱을 식별자와 부여받고자 하는 scope 정보 등의 parameter가 포함됩니다.  
+request에는 파트너앱을 식별할 수 있는 정보와 부여받고자 하는 scope 정보 등의 parameter가 포함됩니다.  
 또한 "약관동의" 절차를 통해 Melon Resource 사용 권한을 파트너사에 제공할 것인지 사용자로부터 승인 받습니다.
 
 (Melon OAuth2 Authorization Endpoint *URL*)  
