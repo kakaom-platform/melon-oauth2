@@ -38,7 +38,7 @@ user-like-read      | 사용자 "좋아요" read 권한                   | No
 user-like-modify    | 사용자 "좋아요" write/delete 권한           | No   
 
 ### OAuth2 access tokens 발급 flow
-Melon의 OAuth2 access token을 발급받기 위해서는 크게 *4단계*로 나뉩니다.
+Melon의 OAuth2 access token을 발급받는 과정은 크게 *4단계*로 나뉩니다.
 
 **Step 1: Authorization Endpoint을 이용한 authorization_code 발급 요청**  
 첫번째로, 파트너앱에서 웹뷰를 로드하여 authorization HTTP request를 요청합니다.  
