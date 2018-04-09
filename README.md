@@ -8,7 +8,7 @@ Melon에서는 일반적으로 [Authorization code grant](https://tools.ietf.org
 **authorization credentials 생성**  
 클라이언트 혹은 제휴사가(이하 '파트너') OAuth2를 이용해 Melon Resource API를 사용하려면,  
 먼저 파트너를 식별할 수 있는 authorization credentials(client_id/client_secret 기반)를 발급 받아야 합니다.  
-현재, 수동적인 프로세스를 통해 authorization credentials 을 발급하고 있습니다.  
+현재, 수동적인 프로세스를 통해 authorization credentials을 발급하고 있습니다.  
 아래 내용을 포함한 정보를 담당자(파트너사와 협업하는 Melon의 담당자)에게 전달해주시면 됩니다.  
 
 1. 애플리케이션 유형 : (웹애플리케이션/Android/Chrome앱/iOS/기타)
@@ -42,8 +42,8 @@ Melon의 OAuth2 access token을 발급받기 위해서는 크게 *4단계*로 �
 
 **Step 1: Authorization Endpoint을 이용한 authorization_code 발급 요청**  
 첫번째로, 파트너앱에서 웹뷰를 로드하여 authorization HTTP request를 요청합니다.  
-request에는 파트너앱을 식별할 수 있는 parameter와 부여받고자 하는 scope 정보 등의 parameter가 포함됩니다.  
-"약관동의" 절차를 통해 Melon Resource 사용 권한을 파트너사에 제공할 것인지 사용자로부터 승인 받습니다.
+request에는 파트너앱을 식별자와 부여받고자 하는 scope 정보 등의 parameter가 포함됩니다.  
+또한 "약관동의" 절차를 통해 Melon Resource 사용 권한을 파트너사에 제공할 것인지 사용자로부터 승인 받습니다.
 
 (Melon OAuth2 Authorization Endpoint *URL*)  
 Authorization Endpoint는 HTTPS 호출만 가능하며, HTTP *GET* Method로 호출되어야 합니다.
