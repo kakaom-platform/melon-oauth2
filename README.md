@@ -14,7 +14,7 @@ Melon에서는 일반적으로 [Authorization code grant](https://tools.ietf.org
 1. 애플리케이션 유형 : (웹애플리케이션/Android/Chrome앱/iOS/기타)
 2. 파트너 담당자 이메일 주소 : 
 3. 사용자에게 표시 되는 애플리케이션 명(서비스 명) :
-4. Redirect Uris : (인증코드를 전달 받을 수 있는 redirect_uris. 복수설정 가능합니다. ex) https://your.site.com/redirect_oauth)
+4. Redirect Uris : authorization code를 전달 받을 수 있는 redirect_uris. 복수설정 가능합니다. ex) https://your.site.com/redirect_oauth)
 
 
 ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) `발급된 authorization credential은 외부 유출이 되지 않도록 별도 보관하셔야 합니다.  
@@ -22,7 +22,7 @@ Melon에서는 일반적으로 [Authorization code grant](https://tools.ietf.org
 
 
 **scope 정의**  
-Melon의 Resource API는 scope을 통해 세부적으로 제어가 됩니다.  
+Melon의 Resource Apis는 scope을 통해 세부적으로 제어가 됩니다.  
 파트너는 scope에 따른 '약관 동의'를 사용자로부터 승인 받아야 하며, 승인된 scope의 resource API만 접근 허용됩니다.  
 
 OAuth 2.0 integration을 진행하기 전에, 멜론의 제휴담당자 혹은 기획담당자와 협의하여 사용될 서비스에 대한 scope을 식별하시길 권장합니다.  
@@ -42,14 +42,14 @@ Melon의 OAuth2 access token을 발급받기 위해서는 크게 *4단계*로 �
 
 **Step 1: Authorization Endpoint을 이용한 authorization_code 발급 요청**  
 첫번째로, 파트너앱에서 웹뷰를 로드하여 authorization HTTP request를 요청합니다.
-request에는 파트너앱을 식별할 수 있는 파라미터와 부여받고자 하는 scope 정보 등의 파라미터가 포함되며,
-또한, Melon의 자원 사용 인가를 파트너사에게 제공할것안지 사용자로부터 "약관동의" 절차를 거치게 됩니다.  
+request에는 파트너앱을 식별할 수 있는 파라미터와 부여받고자 하는 scope 정보 등이 포함되며, 
+Melon Resource 사용 권한을 파트너에게 제공할것인지 사용자로부터 "약관동의" 절차를 거치게 됩니다.  
 
-(Melon OAuth2 Authorization Endpoint URL)
+(Melon OAuth2 Authorization Endpoint *URL*)  
 Authorization Endpoint는 HTTPS 호출만 가능하며, HTTP *GET* Method로 호출되어야 합니다.
 * `https://auth.melon.com/oauth/authorize`
 
-(Melon OAuth2 Authorization Endpoint Parameters)
+(Melon OAuth2 Authorization Endpoint *Parameters*)  
 Authorization Endpoint URL과 같이 전달되어야 하는 파라미터는 *query string*으로 전달되어야 하며,
 그 항목은 다음과 같습니다.
 
@@ -74,9 +74,9 @@ https://auth.melon.com/oauth/authorize?
 
 
 **Step 2: Authorization Endpoint 응답 처리**  
-사용자의 로그인 및 약관동의 프로세스가 성공적으로 이루어지면, OAuth 서버는 authorization_code를 포함하여 redirect_uri로 응답하며,  
+사용자의 로그인 및 약관동의 프로세스가 정상적으로 이루어지면, OAuth 서버는 authorization_code 값을 포함하여 redirect_uri로 응답하며,  
 만약 사용자가 약관동의를 거부하였다면 authorization_code 대신 error 메시지를 응답합니다.  
-authoriaztion_code 와 error 메시지는 아래와 같이 QueryString에 포함됩니다.  
+authoriaztion_code 와 error 메시지는 아래와 같이 *query string*에 포함됩니다.  
 
 성공 응답:  
 `https://partner.site.com/callback?code=4BaiLw&state=xyz`
@@ -84,14 +84,14 @@ authoriaztion_code 와 error 메시지는 아래와 같이 QueryString에 포함
 에러 응답:  
 `https://partner.site.com/callback?error=access_denied&error_description=User%20denied%20access&state=xyz`  
 
-![#f03c15](https://placehold.it/15/f03c15/000000?text=+) 
-`Authorization Endpoint의 응답에 대한 이후 처리는 반드시 파트너의 서버단에서 이루어 저야 합니다.
-(파트너의 authorization credential 보호 목적)`
 
-
-**Step 3-1: authorization_code를 통한 refresh_token & access_token 획득(by Token Endpoint)**  
+**Step 3-1: authorization_code를 이용한 refresh_token & access_token 획득(by Token Endpoint)**  
 파트너 웹 서버에서 authorization_code를 정상적으로 발급 받았다면, 
 Token Endpoint를 request하여 refresh_token 및 access_token을 발급받을 수 있습니다.  
+
+![#f03c15](https://placehold.it/15/f03c15/000000?text=+) 
+`Token Endpoint request는 반드시 파트너의 서버단에서 이루어 저야 합니다.
+(파트너의 authorization credential 보호 목적)`  
 
 (Melon OAuth2 Token Endpoint URL)  
 Token Endpoint는 HTTPS 호출만 가능하며, HTTP *POST* Method로 호출되어야 합니다.
@@ -127,7 +127,7 @@ client_id=partner_client_id&
 client_secret=partner_client_secret
 ```
 
-**Step 3-2: refresh_token을 통한 access_token 갱신(by Token Endpoint)**  
+**Step 3-2: refresh_token을 이용한 access_token 갱신(by Token Endpoint)**  
 이미 발급받은 access_token이 만료될 경우, refresh_token을 통해 access_token을 갱신할 수 있습니다.
 
 (Melon OAuth2 Token Endpoint URL)  
@@ -136,7 +136,7 @@ Token Endpoint는 HTTPS 호출만 가능하며, HTTP *POST* Method로 호출되�
 
 (Melon OAuth2 Token Endpoint Parameters)  
 Token Endpoint와 같이 전달되어야 하는 파라미터는 *request entity-body*에 포함되어야 하며, 
-*UTF-8*로 인코딩 된 *application/x-www-form-urlencoded* 포맷을 사용해야 합니다.
+*UTF-8*로 인코딩 된 *application/x-www-form-urlencoded* 포맷을 이용해야 합니다.
 파라미터의 항목은 다음과 같습니다.
 
 Parameter           | Required      | Description
@@ -171,7 +171,7 @@ expires_in          |  access_token의 lifetime(초)
 refresh_token       |  access_token을 갱신할 수 있는 토큰. refresh_token은 사용자의 파기 요청(비밀번호 변경, 휴면전환, 탈퇴 등)이 있기전까지 유효함.
 
 ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) 
-`파트너는 발급된 access_token 및 refresh_token을 보안적으로 안전한 곳에 보관해야 합니다.(DB 보관 권장)`  
+`파트너는 발급된 access_token 및 refresh_token을 보안적으로 안전한 곳에 보관해야 합니다.(Data Base 보관 권장)`  
 ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)
 `사용자의 access_token이 만료된다면, 해당 사용자의 refresh_token을 통해 access_token을 갱신합니다. 만약 refresh_token이 유효하지 않은 상태라면, Step 1부터 반복하여 새로운 refresh_token을 발급받습니다.`
 
@@ -191,7 +191,7 @@ refresh_token       |  access_token을 갱신할 수 있는 토큰. refresh_toke
 
 ### Melon Resource Apis 이용  
 파트너앱에서 사용자의 access_token을 정상적으로 발급 받았다면, 해당 사용자의 정보를 기반으로 Melon Resource Apis를 사용할 수 있습니다.  
-그러기 위해서는, Resource Apis를 호출할 때 access_token 정보를 HTTP 헤더 > *Authorization: Bearer*(권장) 혹은 query string에 포함하여 전달해야 합니다.  
+그러기 위해서는, Resource Apis를 호출할 때 access_token 정보를 HTTP 헤더 > *Authorization: Bearer*(권장) 혹은 *query string*에 포함하여 전달해야 합니다.  
 
 (Example)  
 Melon Resource Apis 중, "streaming endpoint"를 "Authorization: Bearer" Http 헤더를 이용하여 호출하는 방법은 다음과 같습니다.  
@@ -207,7 +207,7 @@ GET /oauth/delivery/streaming_path.json?access_token=<access_token>
 Host: alliance.melon.com
 ```
 
-(Melon Resource Apis 에러 응답)
+(Melon Resource Apis 에러 응답)  
 Melon Resource Api request 시 access_token이 비정상적이거나 만료된 경우, Http status code `401` 혹은 `403`이 반한됩니다.  
 이 경우, 파트너는 해당 사용자에 맞는 refresh_token을 이용해 access_token을 갱신하거나,
 refresh_token이 유효하지 않다면 OAuth2 access tokens 발급 flow > Step1 부터 반복하여 access_token을 발급 받은 후, Melon Resource Apis를 호출 해야 합니다.
