@@ -28,9 +28,7 @@ OAuth 2.0 integration을 진행하기 전에, 멜론의 제휴담당자 혹은 �
 Scope               | Description                             | Required
 :-----------------------| :---------------------------------------| :-----------
 streaming               | 음원재생 권한                              | No
-user-playlist-read      | 사용자 "플레이리스트" read 권한               | No
-user-like-read          | 사용자 "좋아요" read 권한                   | No
-user-pay-amount-read    | 사용자 "결제 요청 금액" read 권한             | No  
+user-pay-amount-read    | 사용자 "결제 요청 금액" read 권한(원스토어)     | No  
 
 ### OAuth2 access tokens 발급 flow
 Melon의 OAuth2 access token을 발급받는 과정은 크게 *2단계*로 나뉩니다.
