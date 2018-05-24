@@ -1,8 +1,4 @@
-# Integrating with Melon using Standard OAuth2
-
-이 문서는 OAuth2를 통해 Melon의 resource를 사용하기 위한 integration 가이드이며, 표준 Full Spec은 [이곳](https://oauth.net/2/)에서 확인 가능합니다.  
-Melon에서는 일반적으로 [Authorization code grant](https://tools.ietf.org/html/rfc6749#section-4.1)방식의 인증체계를 사용합니다.
-
+# Integrating with Melon using Authorization Code Grant
 
 ### Prerequisites
 **authorization credentials 생성**  
@@ -30,12 +26,13 @@ OAuth 2.0 integration을 진행하기 전에, 멜론의 제휴담당자 혹은 �
 현재 정의된 Melon OAuth 2.0 API scope은 다음과 같습니다.
 
 Scope               | Description                             | Required
-:-------------------| :---------------------------------------| :-----------
-user-private-read   | 사용자 "개인정보"(name, nickname) read 권한  | **Yes**
-streaming           | 음원재생 권한                              | No
-user-playlist-read  | 사용자 "플레이리스트" read 권한               | No
-user-like-read      | 사용자 "좋아요" read 권한                   | No
-user-like-modify    | 사용자 "좋아요" write/delete 권한           | No   
+:-----------------------| :---------------------------------------| :-----------
+user-private-read       | 사용자 "개인정보"(name, nickname) read 권한  | **Yes**
+streaming               | 음원재생 권한                              | No
+user-playlist-read      | 사용자 "플레이리스트" read 권한               | No
+user-like-read          | 사용자 "좋아요" read 권한                   | No
+user-like-modify        | 사용자 "좋아요" write/delete 권한           | No   
+user-pay-amount-read    | 사용자 "결제 요청 금액" read 권한             | No
 
 ### OAuth2 access tokens 발급 flow
 Melon의 OAuth2 access token을 발급받는 과정은 크게 *4단계*로 나뉩니다.
@@ -159,7 +156,7 @@ client_id=partner_client_id&
 client_secret=partner_client_secret
 ```
 
-**Step: 4: Token Endpoint 응답 처리**  
+**Step 4: Token Endpoint 응답 처리**  
 Token Endpoint의 request가 정상적이면, short-lived access_token과 refresh_token(TTL 없음)이 JSON 포맷으로 응답됩니다.  
 항목은 다음과 같습니다.
 
@@ -171,7 +168,7 @@ expires_in          |  access_token의 lifetime(초)
 refresh_token       |  access_token을 갱신할 수 있는 토큰. refresh_token은 사용자의 파기 요청(비밀번호 변경, 휴면전환, 탈퇴 등)이 있기전까지 유효함.
 
 ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)
-`파트너는 발급된 access_token 및 refresh_token을 보안적으로 안전한 곳에 보관해야 합니다.(Data Base 보관 권장)`  
+`파트너는 발급된 access_token 및 refresh_token을 보안적으로 안전한 곳에 보관해야 합니다.(DB 보관 권장)`  
 ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)
 `사용자의 access_token이 만료된다면, 해당 사용자의 refresh_token을 통해 access_token을 갱신합니다. 만약 refresh_token이 유효하지 않은 상태라면, Step 1부터 반복하여 새로운 refresh_token을 발급받습니다.`
 
