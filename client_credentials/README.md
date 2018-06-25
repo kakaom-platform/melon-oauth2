@@ -119,5 +119,5 @@ Host: alliance.melon.com
 ```
 
 (Melon Resource Apis 에러 응답)  
-Melon Resource Api request 시 access_token이 비정상적이거나 만료된 경우, Http status code `401` 혹은 `403`이 반한됩니다.  
+Melon Resource Api request 시 access_token이 비정상적이거나 만료된 경우, Http status code `401` 혹은 `403`이 반환됩니다.  
 이 경우, OAuth2 access tokens 발급 flow > Step1 부터 반복하여 access_token을 발급 받은 후, Melon Resource Apis를 재호출 해야 합니다.
